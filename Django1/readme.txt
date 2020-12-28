@@ -1,2 +1,1 @@
-Tutorial
-Run Server
+first Django : run server
