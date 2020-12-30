@@ -21,6 +21,10 @@ class Book(models.Model):
     #since genre can contain many books and books can have many genre, used manytomanyfield
     language = models.ForeignKey('Language',on_delete=models.SET_NULL, null=True)
 
+    def display_genre(self):
+        return ', '.join(genre.name for genre in self.genre.all()[:3])
+        display_genre.short_description = 'Genre'
+
     def __str__(self):
         return self.title
 
@@ -66,5 +70,4 @@ class Author(models.Model):
         return reverse('author-detail',args=[str(self.id)])
     def __str__(self):
         return f'{self.last_name},{self.first_name}'
-
 
