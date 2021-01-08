@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.list import ListView
 from django.views.generic.edit import UpdateView, CreateView, DeleteView
-from django.views.generic.detail timport DetailView
+from django.views.generic.detail import DetailView
 from .models import Photo
+from django.contrib import messages
 # Create your views here.
 
 #class형 뷰의 generic view를 이용해서 구현
@@ -20,6 +21,14 @@ class PhotoCreate(CreateView):
 	success_url ='/'
 	#PhotoCreate : 모델 생성할때 채워야할 필드확인, 연결된 템플릿 이름은 Photo_to_create
 	#if success -> back to main page
+	def form_valid(self, form):
+		form.instance.author_id = self.request.user.author_id
+		if form.is_valid():
+			form.instance.save()
+			return redirect('/')
+		else:
+			return self.render_to_response({'form': form})
+
 class PhotoUpdate(UpdateView):
 	model = Photo
 	fields = ['text','image']
